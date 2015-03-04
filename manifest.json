@@ -1,0 +1,31 @@
+{
+    "manifest_version": 2,
+    "name": "Stringistics",
+    "description": "Collections of string utilities.",
+    "version": "0.0.1",
+    "icons": {
+        "16": "images/icon_16.png",
+        "32": "images/icon_32.png",
+        "48": "images/icon_48.png",
+        "128": "images/icon_128.png"
+    },
+    "offline_enabled": true,
+    "browser_action": {
+        "default_icon": {
+            "19": "images/icon_19.png",
+            "38": "images/icon_38.png"
+        },
+        "default_title": "Stringistics",
+        "default_popup": "browser-action.html"
+    },
+    "commands": {
+        "_execute_browser_action": {
+            "suggested_key": {
+                "windows": "Ctrl+H",
+                "mac": "Command+H",
+                "chromeos": "Ctrl+H",
+                "linux": "Ctrl+H"
+            }
+        }
+    }
+}

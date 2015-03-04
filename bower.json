@@ -1,0 +1,16 @@
+{
+    "name": "stringistics",
+    "description": "Collections of string utilities.",
+    "version": "0.0.1",
+    "private": true,
+    "iginore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "semantic-ui": "~>1.10.0"
+    }
+}
