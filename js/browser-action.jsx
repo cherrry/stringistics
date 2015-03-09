@@ -3,18 +3,44 @@
 var React = require("react");
 var CryptoJs = require("crypto-js");
 
+var MIN_TAB = 0;
+var MAX_TAB = 1;
+
 var Stringistics = React.createClass({
     getInitialState: function () {
         var text = localStorage.getItem("text") || "";
+        var active_tab = parseInt(localStorage.getItem("active_tab") || "0");
         return {
             text: text,
-            is_loaded: false
+            is_loaded: false,
+            active_tab: active_tab
         };
+    },
+    componentWillMount: function () {
+        chrome.commands.onCommand.addListener(this._onCommand);
     },
     componentDidMount: function () {
         var textarea = this.refs.textarea.getDOMNode();
         var text = this.state.text;
         textarea.value = text;
+    },
+    componentWillUnmount: function () {
+        chrome.commands.onCommand.removeListener(this._onCommand);
+    },
+    _onCommand: function (command) {
+        if (command === "decrement_tab") {
+            this._switchTab(-1);
+        } else if (command === "increment_tab") {
+            this._switchTab(1);
+        }
+        return true;
+    },
+    _switchTab: function (direction) {
+        var active_tab = this.state.active_tab;
+        active_tab = Math.min(Math.max(MIN_TAB, active_tab + direction), MAX_TAB);
+        this.setState({
+            active_tab: active_tab
+        });
     },
     _updateText: function (event) {
         var text = event.target.value;
@@ -33,30 +59,34 @@ var Stringistics = React.createClass({
         });
     },
     render: function () {
+        var self = this;
 
         if (!this.state.is_loaded) {
-            setTimeout(this._selectText, 100);
+            setTimeout(this._selectText, 128);
         }
 
         var text = this.state.text;
 
+        var Menu = [ "Hasher", "Encoder" ].map(function (tab, index) {
+            var key = "stringistics.tab." + index;
+            return <a key={ key } className={ (index === self.state.active_tab ? "active " : "") + "item" }>{ tab }</a>;
+        });
+
         return (
-            <div className="ui fluid one wide grid">
-                <div className="column">
-                    <div className="ui basic small form segment">
-                        <h4 className="ui header">Hashing</h4>
-                        <div className="field">
-                            <textarea ref="textarea" onChange={ this._updateText } style={{ resize: "none" }}></textarea>
-                        </div>
-                        <div className="field">
-                            <label>MD5</label>
-                            <input type="text" value={ CryptoJs.MD5(text) } readOnly />
-                        </div>
-                        <div className="field">
-                            <label>SHA1</label>
-                            <input type="text" value={ CryptoJs.SHA1(text) } readOnly />
-                        </div>
-                    </div>
+            <div className="ui basic small form segment" style={{ paddingTop: "48px" }}>
+                <div className="ui pointing teal fixed top secondary menu">
+                    { Menu }
+                </div>
+                <div className="field">
+                    <textarea ref="textarea" onChange={ this._updateText } style={{ resize: "none" }}></textarea>
+                </div>
+                <div className="field">
+                    <label>MD5</label>
+                    <input type="text" value={ CryptoJs.MD5(text) } readOnly />
+                </div>
+                <div className="field">
+                    <label>SHA1</label>
+                    <input type="text" value={ CryptoJs.SHA1(text) } readOnly />
                 </div>
             </div>
         );

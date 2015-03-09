@@ -86,9 +86,11 @@ function bundle(task_name) {
         return bundler.bundle()
             .pipe(source(task_def.output))
             .pipe(buffer())
+            /*
             .pipe(sourcemaps.init({ loadMaps: true }))
             .pipe(uglify())
             .pipe(sourcemaps.write("./"))
+            */
             .pipe(gulp.dest("./build"));
     };
 }

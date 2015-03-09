@@ -26,6 +26,24 @@
                 "chromeos": "Ctrl+H",
                 "linux": "Ctrl+H"
             }
+        },
+        "decrement_tab": {
+            "suggested_key": {
+                "windows": "Ctrl+J",
+                "mac": "Command+J",
+                "chromeos": "Ctrl+J",
+                "linux": "Ctrl+J"
+            },
+            "description": "Switch left"
+        },
+        "increment_tab": {
+            "suggested_key": {
+                "windows": "Ctrl+K",
+                "mac": "Command+K",
+                "chromeos": "Ctrl+K",
+                "linux": "Ctrl+K"
+            },
+            "description": "Switch right"
         }
     }
 }
